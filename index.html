@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Samera 💗</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background: linear-gradient(135deg, #ff4d88, #ffd1e6);
+      overflow:hidden;
+    }
+
+    .card{
+      background:white;
+      padding:30px 22px;
+      border-radius:18px;
+      box-shadow:0 12px 35px rgba(0,0,0,.18);
+      text-align:center;
+      max-width:440px;
+      width:90%;
+      position:relative;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size:28px;
+    }
+
+    p{
+      margin:0 0 16px;
+      opacity:.85;
+      font-size:16px;
+    }
+
+    h2{
+      margin:0 0 18px;
+      font-size:22px;
+    }
+
+    .btnArea{
+      position:relative;
+      height:120px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      font-size:16px;
+      padding:12px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      border:none;
+      transition: transform .2s ease;
+      user-select:none;
+    }
+
+    button:hover{
+      transform: scale(1.05);
+    }
+
+    .yes{
+      background:#ff2d75;
+      color:white;
+      z-index:2;
+    }
+
+    .no{
+      background:transparent;
+      border:2px solid #ff2d75;
+      color:#ff2d75;
+      position:absolute;
+      z-index:3;
+    }
+
+    #msg{
+      margin-top:18px;
+      font-weight:800;
+      font-size:18px;
+    }
+
+    .small{
+      margin-top:10px;
+      font-size:13px;
+      opacity:.7;
+    }
+
+    /* confetti */
+    .confetti{
+      position:fixed;
+      width:10px;
+      height:10px;
+      top:-10px;
+      animation: fall 2.5s linear forwards;
+      border-radius:2px;
+      z-index:9999;
+    }
+
+    @keyframes fall{
+      to{
+        transform: translateY(110vh) rotate(720deg);
+        opacity:0;
+      }
+    }
+
+    /* floating hearts */
+    .heart{
+      position:fixed;
+      font-size:22px;
+      animation: floatUp 2.5s ease-out forwards;
+      z-index:9999;
+    }
+
+    @keyframes floatUp{
+      0% { transform: translateY(0) scale(1); opacity:1; }
+      100% { transform: translateY(-200px) scale(1.6); opacity:0; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Samera 💗</h1>
+    <p>From Alexander</p>
+    <h2>Will you be my Valentine? 🌹</h2>
+
+    <div class="btnArea" id="btnArea">
+      <button class="yes" id="yesBtn">Yes 😭💗</button>
+      <button class="no" id="noBtn">No 🙃</button>
+    </div>
+
+    <div id="msg"></div>
+    <div class="small">*the no button is terrified 😭</div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const btnArea = document.getElementById("btnArea");
+    const msg = document.getElementById("msg");
+
+    let noScale = 1;
+    let yesScale = 1;
+
+    // initial position
+    noBtn.style.left = "58%";
+    noBtn.style.top = "10px";
+
+    function moveNoButton(){
+      const areaWidth = btnArea.clientWidth;
+      const areaHeight = btnArea.clientHeight;
+
+      const maxX = areaWidth - noBtn.offsetWidth;
+      const maxY = areaHeight - noBtn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+
+      // shrink NO button
+      noScale -= 0.08;
+      if(noScale < 0.35) noScale = 0.35;
+      noBtn.style.transform = `scale(${noScale})`;
+
+      // grow YES button
+      yesScale += 0.12;
+      if(yesScale > 2.2) yesScale = 2.2;
+      yesBtn.style.transform = `scale(${yesScale})`;
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("click", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    function launchConfetti(){
+      for(let i = 0; i < 70; i++){
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+
+        conf.style.left = Math.random() * 100 + "vw";
+        conf.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        conf.style.width = (6 + Math.random() * 8) + "px";
+        conf.style.height = (6 + Math.random() * 12) + "px";
+        conf.style.animationDuration = (2 + Math.random() * 1.5) + "s";
+
+        document.body.appendChild(conf);
+
+        setTimeout(() => conf.remove(), 3500);
+      }
+    }
+
+    function launchHearts(){
+      const hearts = ["💗","💖","💕","💘","🌹","🥰"];
+      for(let i = 0; i < 25; i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+
+        h.style.left = (40 + Math.random() * 20) + "vw";
+        h.style.top = (55 + Math.random() * 15) + "vh";
+        h.style.fontSize = (18 + Math.random() * 20) + "px";
+
+        document.body.appendChild(h);
+
+        setTimeout(() => h.remove(), 3000);
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      msg.innerHTML = "YESSSS 😭💗💗💗<br>Text me right now: <b>YES ALEXANDER</b> 🥰🌹";
+      launchConfetti();
+      launchHearts();
+
+      // disable the no button completely after yes
+      noBtn.style.display = "none";
+      yesBtn.style.transform = "scale(2.4)";
+    });
+  </script>
+</body>
+</html>
